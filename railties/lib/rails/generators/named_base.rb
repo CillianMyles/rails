@@ -91,11 +91,15 @@ module Rails
         end
 
         def uncountable? # :doc:
-          singular_name == plural_name
+          uncountable = singular_name == plural_name
+          puts "uncountable: #{uncountable}"
+          uncountable
         end
 
         def index_helper(type: nil) # :doc:
-          [plural_route_name, ("index" if uncountable?), type].compact.join("_")
+          result = [plural_route_name, ("index" if uncountable?), type].compact.join("_")
+          puts "result: #{result}"
+          result
         end
 
         def show_helper(arg = "@#{singular_table_name}", type: :url) # :doc:
