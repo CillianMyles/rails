@@ -249,6 +249,11 @@ module ActionDispatch
               method, args = builder.handle_model record_or_hash_or_array
             end
 
+            puts "recipient: #{recipient}"
+            puts "method: #{method}"
+            puts "args: #{args}"
+            puts "options: #{options}"
+
             if options.empty?
               recipient.public_send(method, *args)
             else
@@ -292,8 +297,8 @@ module ActionDispatch
               get_method_for_class model
             end
 
-            puts "named_route: #{@named_route}"
-            puts "args: #{@args}"
+            puts "named_route: #{named_route}"
+            puts "args: #{args}"
 
             [named_route, args]
           end
@@ -367,7 +372,7 @@ module ActionDispatch
               strategy = @key_strategy
               puts "strategy: #{strategy}"
               name = strategy.call model_name
-              puts "name: #{@name}"
+              puts "name: #{name}"
               get_method_for_string name
             end
 
