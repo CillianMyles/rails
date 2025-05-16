@@ -127,6 +127,11 @@ class NamedBaseTest < Rails::Generators::TestCase
     assert_name g, "sheep_index", :index_helper
   end
 
+  def test_index_helper_with_force_plural
+    g = generator ["EligibleDays", "--force-plural"]
+    assert_name g, "eligible_days_index", :index_helper
+  end
+
   def test_hide_namespace
     g = generator ["Hidden"]
     g.class.stub(:namespace, "hidden") do

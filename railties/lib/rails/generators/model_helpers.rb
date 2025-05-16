@@ -24,8 +24,11 @@ module Rails
       end
 
       def initialize(args, *_options)
+        puts "initialize - args: #{args} - _options: #{_options}"
         super
         if plural_model_name?(name) && !options[:force_plural]
+          puts "plural_model_name?(name): #{plural_model_name?(name)}"
+          puts "options[:force_plural]: #{options[:force_plural]}"
           singular = name.singularize
           unless ModelHelpers.skip_warn
             say PLURAL_MODEL_NAME_WARN_MESSAGE % [name, singular]

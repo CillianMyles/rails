@@ -264,6 +264,7 @@ module ActionDispatch
           attr_reader :suffix, :prefix
 
           def initialize(key_strategy, prefix, suffix)
+            puts "initialize - #{key_strategy}, #{prefix}, #{suffix}"
             @key_strategy = key_strategy
             @prefix       = prefix
             @suffix       = suffix

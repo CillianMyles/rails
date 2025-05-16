@@ -76,6 +76,11 @@ module Rails
 
         # Instantiate the generator.
         def generator(args = default_arguments, options = {}, config = {})
+          puts "generator_class: #{generator_class}"
+          puts "args: #{args}"
+          puts "options: #{options}"
+          puts "config: #{config}"
+          puts "destination_root: #{destination_root}"
           @generator ||= generator_class.new(args, options, config.reverse_merge(destination_root: destination_root))
         end
 
