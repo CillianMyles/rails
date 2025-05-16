@@ -1365,13 +1365,13 @@ module ActionDispatch
 
           def plural
             @plural ||= name.to_s
-            puts "plural: #{plural}"
+            puts "plural: #{@plural}"
             @plural
           end
 
           def singular
             @singular ||= name.to_s.singularize
-            puts "singular: #{singular}"
+            puts "singular: #{@singular}"
             @singular
           end
 
@@ -1380,9 +1380,9 @@ module ActionDispatch
           # Checks for uncountable plurals, and appends "_index" if the plural and
           # singular form are the same.
           def collection_name
-            collection_name = singular == plural ? "#{plural}_index" : plural
-            puts "collection_name: #{collection_name}"
-            collection_name
+            value = singular == plural ? "#{plural}_index" : plural
+            puts "collection_name: #{value}"
+            value
           end
 
           def resource_scope
