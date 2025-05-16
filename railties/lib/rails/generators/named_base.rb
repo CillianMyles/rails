@@ -91,6 +91,7 @@ module Rails
         end
 
         def uncountable? # :doc:
+          return false if options[:force_plural]
           uncountable = singular_name == plural_name
           puts "uncountable: #{uncountable}"
           uncountable
@@ -98,7 +99,7 @@ module Rails
 
         def index_helper(type: nil) # :doc:
           result = [plural_route_name, ("index" if uncountable?), type].compact.join("_")
-          puts "result: #{result}"
+          puts "index_helper: #{result}"
           result
         end
 
