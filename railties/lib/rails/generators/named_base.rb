@@ -91,7 +91,6 @@ module Rails
         end
 
         def uncountable? # :doc:
-          return false if options[:force_plural]
           uncountable = singular_name == plural_name
           puts "uncountable: #{uncountable}"
           uncountable
