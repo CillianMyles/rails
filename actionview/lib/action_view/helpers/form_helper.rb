@@ -755,11 +755,14 @@ module ActionView
       #     form_with(**options.merge(builder: LabellingFormBuilder), &block)
       #   end
       def form_with(model: false, scope: nil, url: nil, format: nil, **options, &block)
+        puts "form_with: #{model}"
         raise ArgumentError, "Passed nil to the :model argument, expect an object or false" if model.nil?
 
         options = { allow_method_names_outside_object: true, skip_default_ids: !form_with_generates_ids }.merge!(options)
 
         if model
+          puts "model: #{model}"
+          puts "url: #{url}"
           if url != false
             url ||= if format.nil?
               polymorphic_path(model, {})
@@ -767,9 +770,11 @@ module ActionView
               polymorphic_path(model, format: format)
             end
           end
-
+          puts "url: #{url}"
           model   = convert_to_model(_object_for_form_builder(model))
+          puts "model: #{model}"
           scope ||= model_name_from_record_or_class(model).param_key
+          puts "scope: #{scope}"
         end
 
         if block_given?

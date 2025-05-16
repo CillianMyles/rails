@@ -131,6 +131,8 @@ module ActionDispatch
 
       # Returns the path component of a URL for the given record.
       def polymorphic_path(record_or_hash_or_array, options = {})
+        puts "polymorphic_path - #{record_or_hash_or_array} - #{options}"
+
         if Hash === record_or_hash_or_array
           options = record_or_hash_or_array.merge(options)
           record  = options.delete :id
@@ -138,6 +140,7 @@ module ActionDispatch
         end
 
         if mapping = polymorphic_mapping(record_or_hash_or_array)
+          puts "mapping - #{mapping}"
           return mapping.call(self, [record_or_hash_or_array, options], true)
         end
 
@@ -175,8 +178,12 @@ module ActionDispatch
         end
 
         def polymorphic_mapping(record)
+          puts "polymorphic_mapping - #{record}"
           if record.respond_to?(:to_model)
-            _routes.polymorphic_mappings[record.to_model.model_name.name]
+            key = record.to_model.model_name.name
+            value = _routes.polymorphic_mappings[key]
+            puts "key: #{key} - value: #{value}"
+            value
           else
             _routes.polymorphic_mappings[record.class.name]
           end
@@ -212,10 +219,12 @@ module ActionDispatch
           end
 
           def self.polymorphic_method(recipient, record_or_hash_or_array, action, type, options)
+            puts "polymorphic_method - #{recipient}, #{record_or_hash_or_array}, #{action}, #{type}, #{options}"
             builder = get action, type
 
             case record_or_hash_or_array
             when Array
+              puts "case: Array"
               record_or_hash_or_array = record_or_hash_or_array.compact
               if record_or_hash_or_array.empty?
                 raise ArgumentError, "Nil location provided. Can't build URI."
@@ -226,13 +235,17 @@ module ActionDispatch
 
               method, args = builder.handle_list record_or_hash_or_array
             when String, Symbol
+              puts "case: String, Symbol"
               method, args = builder.handle_string record_or_hash_or_array
             when Class
+              puts "case: Class"
               method, args = builder.handle_class record_or_hash_or_array
 
             when nil
+              puts "case: null"
               raise ArgumentError, "Nil location provided. Can't build URI."
             else
+              puts "case: else"
               method, args = builder.handle_model record_or_hash_or_array
             end
 
@@ -271,12 +284,16 @@ module ActionDispatch
             args  = []
 
             model = record.to_model
+            puts "model: #{model}"
             named_route = if model.persisted?
               args << model
               get_method_for_string model.model_name.singular_route_key
             else
               get_method_for_class model
             end
+
+            puts "named_route: #{@named_route}"
+            puts "args: #{@args}"
 
             [named_route, args]
           end
@@ -345,11 +362,19 @@ module ActionDispatch
             end
 
             def get_method_for_class(klass)
-              name = @key_strategy.call klass.model_name
+              model_name = klass.model_name
+              puts "model_name: #{model_name}"
+              strategy = @key_strategy
+              puts "strategy: #{strategy}"
+              name = strategy.call model_name
+              puts "name: #{@name}"
               get_method_for_string name
             end
 
             def get_method_for_string(str)
+              puts "prefix: #{prefix}"
+              puts "str: #{str}"
+              puts "suffix: #{suffix}"
               "#{prefix}#{str}_#{suffix}"
             end
 
